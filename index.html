@@ -19,16 +19,21 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body {
-    font-family: 'Baloo 2', cursive;
-    background: linear-gradient(135deg, #FF6B9D 0%, #FF8C42 30%, #FFD93D 60%, #C77DFF 100%);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    position: relative;
-  }
+ body {
+  font-family: 'Baloo 2', cursive;
+  background: linear-gradient(135deg, #FF6B9D 0%, #FF8C42 30%, #FFD93D 60%, #C77DFF 100%);
+  min-height: 100vh;
+
+  display: flex;
+  align-items: flex-start;   /* 👈 changed from center */
+  justify-content: center;
+
+  overflow-y: auto;          /* 👈 allow vertical scroll */
+  overflow-x: hidden;
+
+  position: relative;
+  padding: 20px 0;           /* 👈 spacing for top/bottom */
+}
 
   /* Floating emojis background */
   .floaties {
