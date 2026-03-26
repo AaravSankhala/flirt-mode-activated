@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>😂 Bhanu vs Aarav: The Game 🎮</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #FF6B9D;
+    --hot-pink: #FF3E82;
+    --yellow: #FFD93D;
+    --orange: #FF8C42;
+    --purple: #C77DFF;
+    --light: #FFF0F5;
+    --green: #6BCB77;
+    --red: #FF4D6D;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Baloo 2', cursive;
+    background: linear-gradient(135deg, #FF6B9D 0%, #FF8C42 30%, #FFD93D 60%, #C77DFF 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Floating emojis background */
+  .floaties {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .floatie {
+    position: absolute;
+    font-size: 2rem;
+    animation: floatUp linear infinite;
+    opacity: 0.4;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.5; }
+    90% { opacity: 0.4; }
+    100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* Card */
+  .card {
+    position: relative;
+    z-index: 10;
+    background: rgba(255,255,255,0.95);
+    border-radius: 30px;
+    padding: 40px 35px;
+    max-width: 480px;
+    width: 92%;
+    box-shadow: 0 20px 60px rgba(255,62,130,0.35), 0 0 0 4px var(--pink);
+    text-align: center;
+    animation: cardPop 0.6s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  @keyframes cardPop {
+    0% { transform: scale(0) rotate(-5deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  .progress-bar-wrap {
+    background: #FFE0EB;
+    border-radius: 50px;
+    height: 12px;
+    margin-bottom: 25px;
+    overflow: hidden;
+    border: 2px solid var(--pink);
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--hot-pink), var(--purple));
+    border-radius: 50px;
+    transition: width 0.5s ease;
+  }
+
+  .q-number {
+    font-size: 0.85rem;
+    color: var(--purple);
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .emoji-big {
+    font-size: 4.5rem;
+    margin: 10px 0;
+    display: block;
+    animation: bounce 1s ease infinite alternate;
+  }
+
+  @keyframes bounce {
+    0% { transform: translateY(0) rotate(-5deg); }
+    100% { transform: translateY(-12px) rotate(5deg); }
+  }
+
+  .question {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #333;
+    line-height: 1.4;
+    margin: 15px 0 10px;
+  }
+
+  .sub-text {
+    font-size: 0.9rem;
+    color: #999;
+    margin-bottom: 28px;
+    font-family: 'Nunito', sans-serif;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  .btn-yes {
+    background: linear-gradient(135deg, var(--green), #4CAF50);
+    color: white;
+    border: none;
+    padding: 16px 45px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Baloo 2', cursive;
+    box-shadow: 0 6px 20px rgba(107,203,119,0.5);
+    transition: transform 0.15s, box-shadow 0.15s;
+    letter-spacing: 1px;
+  }
+
+  .btn-yes:hover {
+    transform: scale(1.08) translateY(-3px);
+    box-shadow: 0 10px 30px rgba(107,203,119,0.6);
+  }
+
+  .btn-yes:active { transform: scale(0.95); }
+
+  .btn-no {
+    background: linear-gradient(135deg, var(--red), #C9184A);
+    color: white;
+    border: none;
+    padding: 16px 45px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Baloo 2', cursive;
+    box-shadow: 0 6px 20px rgba(255,77,109,0.4);
+    transition: transform 0.2s, left 0.1s, top 0.1s;
+    position: relative;
+    letter-spacing: 1px;
+  }
+
+  .btn-no.escaping {
+    transition: none !important;
+  }
+
+  .hint {
+    font-size: 0.8rem;
+    color: var(--red);
+    margin-top: 12px;
+    font-weight: 700;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-family: 'Nunito', sans-serif;
+  }
+
+  .hint.show { opacity: 1; }
+
+  /* Celebration screen */
+  #celebrate {
+    display: none;
+    position: relative;
+    z-index: 10;
+    background: rgba(255,255,255,0.97);
+    border-radius: 30px;
+    padding: 40px 35px;
+    max-width: 480px;
+    width: 92%;
+    box-shadow: 0 20px 60px rgba(255,62,130,0.5), 0 0 0 4px var(--hot-pink);
+    text-align: center;
+    animation: cardPop 0.8s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  .celebrate-emoji {
+    font-size: 5rem;
+    display: block;
+    animation: spinBounce 1.5s ease infinite;
+  }
+
+  @keyframes spinBounce {
+    0% { transform: scale(1) rotate(0deg); }
+    25% { transform: scale(1.2) rotate(-10deg); }
+    50% { transform: scale(1) rotate(0deg); }
+    75% { transform: scale(1.2) rotate(10deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
+
+  .celebrate-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--hot-pink), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 15px 0 10px;
+  }
+
+  .celebrate-msg {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.7;
+    margin: 15px 0 25px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+  }
+
+  .celebrate-msg span {
+    color: var(--hot-pink);
+    font-size: 1.2rem;
+  }
+
+  .confetti-emoji {
+    position: fixed;
+    font-size: 1.8rem;
+    pointer-events: none;
+    z-index: 100;
+    animation: confettiFall linear forwards;
+  }
+
+  @keyframes confettiFall {
+    0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  .restart-btn {
+    background: linear-gradient(135deg, var(--hot-pink), var(--purple));
+    color: white;
+    border: none;
+    padding: 14px 40px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Baloo 2', cursive;
+    box-shadow: 0 6px 20px rgba(255,62,130,0.4);
+    transition: transform 0.15s;
+    margin-top: 5px;
+  }
+
+  .restart-btn:hover { transform: scale(1.07); }
+
+  .hearts-burst {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 50;
+  }
+
+  .heart-burst {
+    position: absolute;
+    font-size: 2rem;
+    animation: heartFly 2s ease-out forwards;
+  }
+
+  @keyframes heartFly {
+    0% { transform: translate(0, 0) scale(0); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(1.5); opacity: 0; }
+  }
+
+  /* Screen shake on NO attempt */
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px) rotate(-2deg); }
+    40% { transform: translateX(8px) rotate(2deg); }
+    60% { transform: translateX(-6px) rotate(-1deg); }
+    80% { transform: translateX(6px) rotate(1deg); }
+  }
+
+  .shake { animation: shake 0.4s ease; }
+
+  .love-tag {
+    background: linear-gradient(135deg, var(--pink), var(--orange));
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 4px 14px;
+    border-radius: 50px;
+    display: inline-block;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating emojis -->
+<div class="floaties" id="floaties"></div>
+
+<!-- Game Card -->
+<div class="card" id="gameCard">
+  <div class="love-tag">💘 Pagal Pyaar Test 💘</div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+  </div>
+  <div class="q-number" id="qNumber">Sawaal 1 / 7</div>
+  <span class="emoji-big" id="qEmoji">🤪</span>
+  <div class="question" id="questionText">Loading...</div>
+  <div class="sub-text" id="subText">Soch ke jawab dena... ya mat soch 😂</div>
+  <div class="buttons">
+    <button class="btn-yes" id="yesBtn" onclick="answerYes()">✅ Haan Ji!</button>
+    <button class="btn-no" id="noBtn" onmouseover="runAway()" ontouchstart="runAway()">❌ Nahi</button>
+  </div>
+  <div class="hint" id="hint">Haha! NO button aapse bhaag raha hai! 😂</div>
+</div>
+
+<!-- Celebration Screen -->
+<div id="celebrate">
+  <span class="celebrate-emoji">🎉</span>
+  <div class="celebrate-title">Bilkul Sahi Jawab! 🌹</div>
+  <div class="celebrate-msg" id="celebrateMsg">...</div>
+  <button class="restart-btn" onclick="restart()">🔄 Phir Se Khelna Hai!</button>
+</div>
+
+<script>
+const questions = [
+  {
+    emoji: "🤪",
+    q: "Kya aap thode se pagal hain?",
+    sub: "(Seedha jawab dijiye, hum sab thode pagal hain 😄)",
+  },
+  {
+    emoji: "🥺",
+    q: "Kya aap kabhi kabhi bina wajah muskurati hain?",
+    sub: "(Haan toh boliye... kyunki main bhi karta hoon jab aapko dekhta hoon 😳)",
+  },
+  {
+    emoji: "🧠",
+    q: "Kya aapka dimaag kabhi off ho jaata hai?",
+    sub: "(Mera toh aapko dekhte hi band ho jaata hai 😂)",
+  },
+  {
+    emoji: "💃",
+    q: "Kya aap akele ghar mein dance karti hain?",
+    sub: "(Sach boliye! CCTV nahi hai yahan 😂)",
+  },
+  {
+    emoji: "🌙",
+    q: "Kya raat ko phone dekhte dekhte neend aati hai?",
+    sub: "(Agar haan, toh shayad mujhe bhi soch raha hoga 😏)",
+  },
+  {
+    emoji: "🤡",
+    q: "Kya aap khud ko kabhi stupid feel karti hain?",
+    sub: "(Don't worry, we're all clowns here 🤡❤️)",
+  },
+  {
+    emoji: "💘",
+    q: "Kya aap chahti hain ki Aarav aapse pyaar kare... sachha wala?",
+    sub: "(Ye last sawaal hai... dil se batayein 🥹)",
+  },
+];
+
+let current = 0;
+let noAttempts = 0;
+let hintShown = false;
+let noBtn = document.getElementById('noBtn');
+let gameCard = document.getElementById('gameCard');
+
+// Init floaties
+const floatEmojis = ['🌸','💖','✨','🦋','🌈','💫','❤️','😍','🎀','🌺','💕','⭐'];
+const floaties = document.getElementById('floaties');
+for(let i = 0; i < 18; i++) {
+  const el = document.createElement('div');
+  el.className = 'floatie';
+  el.textContent = floatEmojis[Math.floor(Math.random()*floatEmojis.length)];
+  el.style.left = Math.random()*100 + 'vw';
+  el.style.animationDuration = (6 + Math.random()*8) + 's';
+  el.style.animationDelay = (Math.random()*8) + 's';
+  el.style.fontSize = (1.2 + Math.random()*1.5) + 'rem';
+  floaties.appendChild(el);
+}
+
+function loadQuestion() {
+  const q = questions[current];
+  document.getElementById('qEmoji').textContent = q.emoji;
+  document.getElementById('questionText').textContent = q.q;
+  document.getElementById('subText').textContent = q.sub;
+  document.getElementById('qNumber').textContent = `Sawaal ${current+1} / 7`;
+  document.getElementById('progressBar').style.width = ((current)/7*100) + '%';
+  document.getElementById('hint').classList.remove('show');
+  hintShown = false;
+  noAttempts = 0;
+  resetNoBtn();
+}
+
+function resetNoBtn() {
+  noBtn.style.position = 'relative';
+  noBtn.style.left = '';
+  noBtn.style.top = '';
+  noBtn.style.transform = '';
+}
+
+function runAway() {
+  noAttempts++;
+  if(!hintShown) {
+    document.getElementById('hint').classList.add('show');
+    hintShown = true;
+  }
+  // Move the button randomly within the card area
+  const range = 150;
+  const randX = (Math.random() - 0.5) * range * 2;
+  const randY = (Math.random() - 0.5) * range * 2;
+  noBtn.style.position = 'relative';
+  noBtn.style.left = randX + 'px';
+  noBtn.style.top = randY + 'px';
+  noBtn.style.transition = 'left 0.05s, top 0.05s';
+
+  // Shake card
+  gameCard.classList.remove('shake');
+  void gameCard.offsetWidth;
+  if(noAttempts <= 3) gameCard.classList.add('shake');
+
+  // Funny hint messages
+  const hints = [
+    "Haha! NO button aapse bhaag raha hai! 😂",
+    "Pakad sakein toh pakad lein! 🏃‍♂️💨",
+    "Nahi nahi... sirf YES kaam karega yahan 😏",
+    "Button bol raha hai: 'Mujhe mat dabao!' 😂",
+    "Are yaar, chod dijiye... YES hi dabaana padhega! 🤣"
+  ];
+  document.getElementById('hint').textContent = hints[Math.min(noAttempts-1, hints.length-1)];
+}
+
+function answerYes() {
+  // Mini heart burst
+  burstHearts(event);
+  current++;
+  if(current >= questions.length) {
+    showCelebration();
+  } else {
+    setTimeout(loadQuestion, 300);
+  }
+}
+
+function burstHearts(e) {
+  const hearts = ['❤️','💖','💗','💕','💘','🌸','✨'];
+  for(let i = 0; i < 8; i++) {
+    const h = document.createElement('div');
+    h.className = 'heart-burst';
+    h.textContent = hearts[Math.floor(Math.random()*hearts.length)];
+    const x = (e && e.clientX) ? e.clientX : window.innerWidth/2;
+    const y = (e && e.clientY) ? e.clientY : window.innerHeight/2;
+    h.style.left = x + 'px';
+    h.style.top = y + 'px';
+    const angle = Math.random() * 360;
+    const dist = 80 + Math.random() * 120;
+    h.style.setProperty('--tx', Math.cos(angle)*dist + 'px');
+    h.style.setProperty('--ty', Math.sin(angle)*dist + 'px');
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 2000);
+  }
+}
+
+function showCelebration() {
+  document.getElementById('gameCard').style.display = 'none';
+  const cel = document.getElementById('celebrate');
+  cel.style.display = 'block';
+  document.getElementById('progressBar') && null;
+  
+  const msg = `
+    <span>🌹 Aapko pata hai?</span><br><br>
+    Zindagi mein kuch cheezein fix hoti hain —<br>
+    jaise subah ka suraj ☀️, raat ke taare ⭐,<br>
+    aur aapka ye pagalpan 🤪💕<br><br>
+    <span>Kabhi give up mat karna!</span><br>
+    Har cheez theek ho jaati hai...<br>
+    thoda waqt lagta hai bas. ⏳🌈<br><br>
+    Aap special hain — bilkul 100% 💯❤️<br>
+    <span>Aur haan... aap pagal hain toh sahi,<br>par hain mere/meri wale pagal 😏🌸</span>
+  `;
+  document.getElementById('celebrateMsg').innerHTML = msg;
+
+  // Launch confetti
+  launchConfetti();
+}
+
+function launchConfetti() {
+  const confettiSet = ['🎉','🎊','💖','🌸','✨','🦋','🎀','⭐','💫','🌈','🥳','💕'];
+  let count = 0;
+  const interval = setInterval(() => {
+    for(let i = 0; i < 4; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti-emoji';
+      c.textContent = confettiSet[Math.floor(Math.random()*confettiSet.length)];
+      c.style.left = Math.random()*100 + 'vw';
+      c.style.top = '-50px';
+      c.style.fontSize = (1 + Math.random()*1.5) + 'rem';
+      c.style.animationDuration = (2 + Math.random()*3) + 's';
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 5000);
+    }
+    count++;
+    if(count > 30) clearInterval(interval);
+  }, 200);
+}
+
+function restart() {
+  current = 0;
+  document.getElementById('celebrate').style.display = 'none';
+  document.getElementById('gameCard').style.display = 'block';
+  loadQuestion();
+}
+
+// Init
+loadQuestion();
+</script>
+</body>
+</html>
